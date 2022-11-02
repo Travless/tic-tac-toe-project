@@ -1,5 +1,23 @@
 const genBoard = (() => {
-    let gameArray = ['', '', '', '', '', '', '', '', ''];
+
+    const gameFlow = () => {
+        // Generates if player will be X or O for their player pawn (will improve logic)
+        let playerPawn = prompt('X or O?');
+        let compPlayer = ''
+        const playerOne = playerPawn.toUpperCase();
+        
+        if (playerPawn === 'X') {
+            compPlayer = 'O';
+        } else if (playerPawn === 'O') {
+            compPlayer = 'X';
+        }
+        return { playerOne, compPlayer }
+    };
+
+    gameFlow();
+
+    let initialGameArray = ['', '', '', '', '', '', '', '', ''];
+
     const gameBoard = document.getElementById('gameboard-grid-container');
     let gameCol1 = document.createElement('div');
     gameCol1.classList.add('space-container');
@@ -15,21 +33,39 @@ const genBoard = (() => {
         let space = document.createElement('div');
         space.classList.add('space');
         gameCol1.append(space);
+        space.setAttribute('space-number', i);
     }
-    for(let i = 0; i < 3; i++){
+    for(let i = 3; i < 6; i++){
         let space = document.createElement('div');
         space.classList.add('space');
         gameCol2.append(space);
+        space.setAttribute('space-number', i);
     }
-    for(let i = 0; i < 3; i++){
+    for(let i = 6; i < 9; i++){
         let space = document.createElement('div');
         space.classList.add('space');
         gameCol3.append(space);
+        space.setAttribute('space-number', i);
     }
 
     // return { gameArray, gameCol1, gameCol2, gameCol3, space };
-    return { gameArray }
+    return initialGameArray;
 })();
+
+let gameArray = initialGameArray;
+
+console.log(initialGameArray);
+
+let spaceAvailable = () => {
+    document.addEventListener('click', function(event){
+        let moveLocation = event.target.getAttribute('space-number');
+        console.log(moveLocation);
+        gameArray[moveLocation] = playerOne;
+        console.log(gameArray);
+    });
+};
+
+// spaceAvailable();
 
 
 // const gameBoard = (() => {
