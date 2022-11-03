@@ -1,22 +1,24 @@
+let gameArray = ['', '', '', '', '', '', '', '', ''];
+gameArray.length = 9;
+let playerOne = '';
+let compPlayer = '';
+
 const genBoard = (() => {
 
     const gameFlow = () => {
         // Generates if player will be X or O for their player pawn (will improve logic)
         let playerPawn = prompt('X or O?');
-        let compPlayer = ''
-        const playerOne = playerPawn.toUpperCase();
+        playerOne = playerPawn.toUpperCase();
         
-        if (playerPawn === 'X') {
+        if (playerOne === 'X') {
             compPlayer = 'O';
-        } else if (playerPawn === 'O') {
+        } else if (playerOne === 'O') {
             compPlayer = 'X';
         }
-        return { playerOne, compPlayer }
+        return { playerOne, compPlayer };
     };
 
     gameFlow();
-
-    let initialGameArray = ['', '', '', '', '', '', '', '', ''];
 
     const gameBoard = document.getElementById('gameboard-grid-container');
     let gameCol1 = document.createElement('div');
@@ -47,25 +49,42 @@ const genBoard = (() => {
         gameCol3.append(space);
         space.setAttribute('space-number', i);
     }
-
-    // return { gameArray, gameCol1, gameCol2, gameCol3, space };
-    return initialGameArray;
 })();
 
-let gameArray = initialGameArray;
+console.log(gameArray);
 
-console.log(initialGameArray);
-
-let spaceAvailable = () => {
+let playerOneMove = () => {
     document.addEventListener('click', function(event){
         let moveLocation = event.target.getAttribute('space-number');
-        console.log(moveLocation);
+        // console.log(moveLocation);
+        while (gameArray[moveLocation] = playerOne){
+            alert('same spot, choose again');
+        }
         gameArray[moveLocation] = playerOne;
+        let randomIndex = Math.floor(Math.random() * 9);
+        while (randomIndex === moveLocation){
+            randomIndex = Math.floor(Math.random() * 9);
+        }
+        gameArray[randomIndex] = compPlayer;
+        console.log(randomIndex);
         console.log(gameArray);
     });
 };
 
-// spaceAvailable();
+// let compMove = () => {
+//     document.addEventListener('click', function(event){
+//         let randomIndex = Math.floor(Math.random() * 9);
+//         gameArray[randomIndex] = compPlayer;
+//         if (gameArray[randomIndex] === playerOne){
+//             gameArray[randomIndex] = playerOne;
+//         } else {
+//             gameArray[randomIndex] = compPlayer;
+//         }
+//     })
+// }
+
+playerOneMove();
+// compMove();
 
 
 // const gameBoard = (() => {
