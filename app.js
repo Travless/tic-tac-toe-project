@@ -2,6 +2,7 @@ let gameArray = ['', '', '', '', '', '', '', '', ''];
 gameArray.length = 9;
 let playerOne = '';
 let compPlayer = '';
+let spaces = document.getElementById('gameboard-grid-container');
 
 const genBoard = (() => {
 
@@ -53,14 +54,18 @@ const genBoard = (() => {
 
 console.log(gameArray);
 
+//executes a single move for both the human player and the AI when the player clicks on one of the game spaces
 let playerOneMove = () => {
-    document.addEventListener('click', function(event){
+    spaces.addEventListener('click', function(event){
         let moveLocation = event.target.getAttribute('space-number');
         // console.log(moveLocation);
         if(gameArray[moveLocation] === 'X' || gameArray[moveLocation] === 'O'){
             alert('spot taken, pick again');
+            return;
         } else {
             gameArray[moveLocation] = playerOne;
+            let playerSymbolDisplay = event.target;
+            playerSymbolDisplay.textContent = playerOne;
         };
 
         let randomIndex = Math.floor(Math.random() * 9);
@@ -68,42 +73,13 @@ let playerOneMove = () => {
             randomIndex = Math.floor(Math.random() * 9);
         };
         gameArray[randomIndex] = compPlayer;
+        let compSymbolDisplay = document.querySelector(`[space-number="${randomIndex}"]`);
+        compSymbolDisplay.textContent = compPlayer;
         console.log(gameArray);
         console.log(randomIndex);
         
-
-        // if(gameArray[randomIndex] === 'X' || gameArray[randomIndex] === 'O'){
-        //     while(gameArray[randomIndex] === 'X' || gameArray[randomIndex] === 'O'){
-        //         randomIndex = Math.floor(Math.random() * 9);
-        //     }
-        // } else {
-        //     gameArray[randomIndex] = compPlayer;
-        // }
-        // console.log(gameArray);
-        // console.log(randomIndex);
     });
 };
-
-
-// gameArray[moveLocation] = playerOne;
-        // let randomIndex = Math.floor(Math.random() * 9);
-        // while (randomIndex === moveLocation){
-        //     randomIndex = Math.floor(Math.random() * 9);
-        // }
-        // gameArray[randomIndex] = compPlayer;
-        // console.log(randomIndex);
-        // console.log(gameArray);
-// let compMove = () => {
-//     document.addEventListener('click', function(event){
-//         let randomIndex = Math.floor(Math.random() * 9);
-//         gameArray[randomIndex] = compPlayer;
-//         if (gameArray[randomIndex] === playerOne){
-//             gameArray[randomIndex] = playerOne;
-//         } else {
-//             gameArray[randomIndex] = compPlayer;
-//         }
-//     })
-// }
 
 playerOneMove();
 // compMove();
