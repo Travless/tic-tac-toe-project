@@ -81,12 +81,24 @@ const genGame = (() => {
             gameArray[randomIndex] = compPlayer;
             let compSymbolDisplay = document.querySelector(`[space-number="${randomIndex}"]`);
             compSymbolDisplay.textContent = compPlayer;
-            // console.log(gameArray);
-            // console.log(randomIndex);
 
-            //logs the elements within the desired indexes of gameArray
-            console.log([0,1,2].map(x=>gameArray[x]));
-        
+            const winScenario1 = [0,1,2].map(x=>gameArray[x]);
+            const winScenario2 = [3,4,5].map(x=>gameArray[x]);
+            const winScenario3 = [6,7,8].map(x=>gameArray[x]);
+            const winScenario4 = [0,3,6].map(x=>gameArray[x]);
+            const winScenario5 = [1,4,7].map(x=>gameArray[x]);
+            const winScenario6 = [2,5,8].map(x=>gameArray[x]);
+            const winScenario7 = [0,4,8].map(x=>gameArray[x]);
+            const winScenario8 = [2,4,6].map(x=>gameArray[x]);
+
+            let winScenarios = {winScenario1, winScenario2, winScenario3, winScenario4, winScenario5, winScenario6, winScenario7, winScenario8};
+
+            // if (winScenarios.includes('["X", "X", "X"]') || winScenarios.includes('["O", "O", "O"]')){
+            //     alert('Game Over');
+            // }
+
+            console.log(winScenarios);
         });
     })();
 })();
+
