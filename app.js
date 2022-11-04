@@ -57,20 +57,42 @@ let playerOneMove = () => {
     document.addEventListener('click', function(event){
         let moveLocation = event.target.getAttribute('space-number');
         // console.log(moveLocation);
-        while (gameArray[moveLocation] = playerOne){
-            alert('same spot, choose again');
-        }
-        gameArray[moveLocation] = playerOne;
+        if(gameArray[moveLocation] === 'X' || gameArray[moveLocation] === 'O'){
+            alert('spot taken, pick again');
+        } else {
+            gameArray[moveLocation] = playerOne;
+        };
+
         let randomIndex = Math.floor(Math.random() * 9);
-        while (randomIndex === moveLocation){
+        while(gameArray[randomIndex] === 'X' || gameArray[randomIndex] === 'O'){
             randomIndex = Math.floor(Math.random() * 9);
-        }
+        };
         gameArray[randomIndex] = compPlayer;
-        console.log(randomIndex);
         console.log(gameArray);
+        console.log(randomIndex);
+        
+
+        // if(gameArray[randomIndex] === 'X' || gameArray[randomIndex] === 'O'){
+        //     while(gameArray[randomIndex] === 'X' || gameArray[randomIndex] === 'O'){
+        //         randomIndex = Math.floor(Math.random() * 9);
+        //     }
+        // } else {
+        //     gameArray[randomIndex] = compPlayer;
+        // }
+        // console.log(gameArray);
+        // console.log(randomIndex);
     });
 };
 
+
+// gameArray[moveLocation] = playerOne;
+        // let randomIndex = Math.floor(Math.random() * 9);
+        // while (randomIndex === moveLocation){
+        //     randomIndex = Math.floor(Math.random() * 9);
+        // }
+        // gameArray[randomIndex] = compPlayer;
+        // console.log(randomIndex);
+        // console.log(gameArray);
 // let compMove = () => {
 //     document.addEventListener('click', function(event){
 //         let randomIndex = Math.floor(Math.random() * 9);
