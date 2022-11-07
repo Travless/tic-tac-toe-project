@@ -1,3 +1,8 @@
+let endgame = false;
+let playerScore = 0;
+let compScore = 0;
+
+
 //generates game via a module
 const genGame = (() => {
 
@@ -53,8 +58,9 @@ const genGame = (() => {
             gameCol3.append(space);
             space.setAttribute('space-number', i);
         }
-    })();
-    console.log(gameArray);
+    });
+
+    genGameboard();
 
     //executes a single move for both the human player and the AI when the player clicks on one of the game spaces
     let gameMoves = (() => {
@@ -64,7 +70,14 @@ const genGame = (() => {
             if(gameArray[moveLocation] === 'X' || gameArray[moveLocation] === 'O'){
                 alert('spot taken, pick again');
                 return;
-            } else {
+            } else if (endgame ===true) {
+                let replayPrompt = prompt("Would you like to play again? (Y/N");
+                let replayAnswer = replayPrompt.toUpperCase();
+                    if (replayAnswer === 'Y'){
+                        userPawns();
+                        genGameboard();
+            }
+         } else {
                 gameArray[moveLocation] = playerOne;
                 let playerSymbolDisplay = event.target;
                 playerSymbolDisplay.textContent = playerOne;
@@ -91,14 +104,43 @@ const genGame = (() => {
             const winScenario7 = [0,4,8].map(x=>gameArray[x]);
             const winScenario8 = [2,4,6].map(x=>gameArray[x]);
 
-            let winScenarios = {winScenario1, winScenario2, winScenario3, winScenario4, winScenario5, winScenario6, winScenario7, winScenario8};
+            let winScenarios = [winScenario1, winScenario2, winScenario3, winScenario4, winScenario5, winScenario6, winScenario7, winScenario8];
 
-            // if (winScenarios.includes('["X", "X", "X"]') || winScenarios.includes('["O", "O", "O"]')){
-            //     alert('Game Over');
-            // }
+            function isPlayerPawn (item){
+                return item === playerOne;
+            }
 
-            console.log(winScenarios);
+            function isCompPawn (item){
+                return item === compPlayer;
+            }
+
+            for (let i = 0; i < winScenarios.length; i++){
+                if(winScenarios[i].every(isPlayerPawn)){
+                    alert(`Game Over! ${playerOne} wins!`);
+                    endgame = true;
+                    playerScore += 1;
+                    return endgame, playerScore;
+                } else if(winScenarios[i].every(isCompPawn)){
+                    alert(`Game Over! ${compPlayer} wins!`);
+                    endgame = true;
+                    compScore += 1;
+                    return endgame, compScore;
+                }
+            }
         });
     })();
-})();
+});
 
+const start = document.getElementById('start-btn');
+start.addEventListener('onclick', genGame());
+
+// if (endgame === true){
+//     let replayPrompt = prompt("Would you like to play again? (Y/N");
+//     let replayAnswer = replayPrompt.toUpperCase();
+//     if (replayAnswer === 'Y'){
+//         genGame();
+//     }
+// }
+
+
+console.log(`Player Score: ${playerScore} - Comp Score: ${compScore}`);
