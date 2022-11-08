@@ -1,16 +1,20 @@
-let endgame = false;
+//global variable that are used throughout the modules and factories
+let endGame = false;
+let playerOne = '';
+let compPlayer = '';
 let playerScore = 0;
 let compScore = 0;
+let gameArray = ['', '', '', '', '', '', '', '', ''];
+gameArray.length = 9;
+const pageContainer = document.getElementById('page-container');
+let restartBtn = document.getElementById('restart-btn');
+const start = document.getElementById('start-btn');
 
 
 //generates game via a module
 const genGame = (() => {
-
-    let gameArray = ['', '', '', '', '', '', '', '', ''];
-    gameArray.length = 9;
-    let playerOne = '';
-    let compPlayer = '';
-    let spaces = document.getElementById('gameboard-grid-container');
+    const gameBoard = document.getElementById('gameboard-grid-container');
+    const pageContainer = document.getElementById('page-container');
 
     // Generates if player will be X or O for their player pawn (will improve logic)
     const userPawns = () => {
@@ -29,7 +33,6 @@ const genGame = (() => {
 
     //generates gameboard at beginning of the game, after the player chooses their pawn
     const genGameboard = (() => {
-        const gameBoard = document.getElementById('gameboard-grid-container');
         let gameCol1 = document.createElement('div');
         gameCol1.classList.add('space-container');
         gameBoard.append(gameCol1);
@@ -58,26 +61,21 @@ const genGame = (() => {
             gameCol3.append(space);
             space.setAttribute('space-number', i);
         }
+
+        return gameBoard;
     });
 
     genGameboard();
 
+
     //executes a single move for both the human player and the AI when the player clicks on one of the game spaces
     let gameMoves = (() => {
-        spaces.addEventListener('click', function(event){
+        gameBoard.addEventListener('click', function(event){
             let moveLocation = event.target.getAttribute('space-number');
-            // console.log(moveLocation);
-            if(gameArray[moveLocation] === 'X' || gameArray[moveLocation] === 'O'){
-                alert('spot taken, pick again');
+            console.log(moveLocation);
+            if(gameArray[moveLocation] === 'X' || gameArray[moveLocation] === 'O' || moveLocation === null || endGame === true){
                 return;
-            } else if (endgame ===true) {
-                let replayPrompt = prompt("Would you like to play again? (Y/N");
-                let replayAnswer = replayPrompt.toUpperCase();
-                    if (replayAnswer === 'Y'){
-                        userPawns();
-                        genGameboard();
-            }
-         } else {
+            } else {
                 gameArray[moveLocation] = playerOne;
                 let playerSymbolDisplay = event.target;
                 playerSymbolDisplay.textContent = playerOne;
@@ -117,30 +115,53 @@ const genGame = (() => {
             for (let i = 0; i < winScenarios.length; i++){
                 if(winScenarios[i].every(isPlayerPawn)){
                     alert(`Game Over! ${playerOne} wins!`);
-                    endgame = true;
+                    endGame = true;
                     playerScore += 1;
-                    return endgame, playerScore;
+                    return playerScore, endGame;
                 } else if(winScenarios[i].every(isCompPawn)){
                     alert(`Game Over! ${compPlayer} wins!`);
-                    endgame = true;
+                    endGame = true;
                     compScore += 1;
-                    return endgame, compScore;
+                    return compScore, endGame;
                 }
-            }
-        });
+            };
+        })
     })();
 });
 
-const start = document.getElementById('start-btn');
-start.addEventListener('onclick', genGame());
+//event listener designated to Start button, which will initial game generation as well as remove the button's DOM element and toggle the Game Reset button's visability
+start.addEventListener('click', function(event){
+    genGame();
+    start.remove();
+    toggle();
+});
 
-// if (endgame === true){
-//     let replayPrompt = prompt("Would you like to play again? (Y/N");
-//     let replayAnswer = replayPrompt.toUpperCase();
-//     if (replayAnswer === 'Y'){
-//         genGame();
-//     }
-// }
+//function used to toggle visibility of game restart button
+function toggle(){
+    let hidden = restartBtn.getAttribute('hidden');
+
+    if(hidden){
+        restartBtn.removeAttribute('hidden');
+    } else {
+        restartBtn.setAttribute('hidden', 'hidden');
+    }
+}
+
+//function used to restart the game. The wording and presentation of this will probably change (i.e. Play Again?)
+function restartGame (){
+    for(let i = 0; i < gameArray.length; i++){
+        gameArray.splice(i, 1, '');
+        let compSymbolDisplay = document.querySelector(`[space-number="${i}"]`);
+        compSymbolDisplay.textContent = '';
+        endGame = false;
+    }
+}
+
+//event listener that initiates the restart of the game
+restartBtn.addEventListener('click', function(event){
+    restartGame();
+})
+
 
 
 console.log(`Player Score: ${playerScore} - Comp Score: ${compScore}`);
