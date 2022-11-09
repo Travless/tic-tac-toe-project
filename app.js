@@ -7,7 +7,8 @@ let compScore = 0;
 let gameArray = ['', '', '', '', '', '', '', '', ''];
 gameArray.length = 9;
 const pageContainer = document.getElementById('page-container');
-let restartBtn = document.getElementById('restart-btn');
+const resetBtn = document.getElementById('reset-btn');
+const playAgainBtn = document.getElementById('play-again-btn');
 const start = document.getElementById('start-btn');
 
 
@@ -80,7 +81,7 @@ const genGame = (() => {
                 let playerSymbolDisplay = event.target;
                 playerSymbolDisplay.textContent = playerOne;
             };
-
+            
             let randomIndex = Math.floor(Math.random() * 9);
             while(gameArray[randomIndex] === 'X' || gameArray[randomIndex] === 'O'){
                 if(gameArray.includes('')){
@@ -133,22 +134,33 @@ const genGame = (() => {
 start.addEventListener('click', function(event){
     genGame();
     start.remove();
-    toggle();
+    toggle(playAgainBtn);
+    toggle(resetBtn);
 });
 
-//function used to toggle visibility of game restart button
-function toggle(){
-    let hidden = restartBtn.getAttribute('hidden');
+//function used to toggle visibility of game reset button
+// function toggleReset(){
+//     let hiddenReset = resetBtn.getAttribute('hidden');
+
+//     if(hiddenReset){
+//         resetBtn.removeAttribute('hidden');
+//     } else {
+//         resetBtn.setAttribute('hidden', 'hidden');
+//     }
+// }
+
+function toggle(element){
+    let hidden = element.getAttribute('hidden');
 
     if(hidden){
-        restartBtn.removeAttribute('hidden');
+        element.removeAttribute('hidden');
     } else {
-        restartBtn.setAttribute('hidden', 'hidden');
+        element.setAttribute('hidden', 'hidden');
     }
 }
 
-//function used to restart the game. The wording and presentation of this will probably change (i.e. Play Again?)
-function restartGame (){
+//function used to start a new round of the game, while maintaining a the running tally score between the player and the AI
+function playAgain (){
     for(let i = 0; i < gameArray.length; i++){
         gameArray.splice(i, 1, '');
         let compSymbolDisplay = document.querySelector(`[space-number="${i}"]`);
@@ -157,11 +169,20 @@ function restartGame (){
     }
 }
 
-//event listener that initiates the restart of the game
-restartBtn.addEventListener('click', function(event){
-    restartGame();
+//function used to completely reset the game and its running tally score between the player and AI
+function resetGame(){
+    window.location.reload();
+}
+
+//event listener that initiates the start of a new round
+playAgainBtn.addEventListener('click', function(event){
+    playAgain();
 })
 
+//event listener that initiates the full reset of the game
+resetBtn.addEventListener('click', function(event){
+    resetGame();
+})
 
 
 console.log(`Player Score: ${playerScore} - Comp Score: ${compScore}`);
