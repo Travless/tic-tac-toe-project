@@ -72,6 +72,44 @@ const genGame = (() => {
     //executes a single move for both the human player and the AI when the player clicks on one of the game spaces
     let gameMoves = (() => {
         gameBoard.addEventListener('click', function(event){
+
+            //function designed to text all Win Scenarios after each move either the play or AI makes
+            function winTest(){
+                const winScenario1 = [0,1,2].map(x=>gameArray[x]);
+                const winScenario2 = [3,4,5].map(x=>gameArray[x]);
+                const winScenario3 = [6,7,8].map(x=>gameArray[x]);
+                const winScenario4 = [0,3,6].map(x=>gameArray[x]);
+                const winScenario5 = [1,4,7].map(x=>gameArray[x]);
+                const winScenario6 = [2,5,8].map(x=>gameArray[x]);
+                const winScenario7 = [0,4,8].map(x=>gameArray[x]);
+                const winScenario8 = [2,4,6].map(x=>gameArray[x]);
+    
+                let winScenarios = [winScenario1, winScenario2, winScenario3, winScenario4, winScenario5, winScenario6, winScenario7, winScenario8];
+    
+                function isPlayerPawn (item){
+                    return item === playerOne;
+                }
+    
+                function isCompPawn (item){
+                    return item === compPlayer;
+                }
+
+                for (let i = 0; i < winScenarios.length; i++){
+                    if(winScenarios[i].every(isPlayerPawn)){
+                        alert(`Game Over! ${playerOne} wins!`);
+                        endGame = true;
+                        playerScore += 1;
+                        return playerScore, endGame;
+                    } else if(winScenarios[i].every(isCompPawn)){
+                        alert(`Game Over! ${compPlayer} wins!`);
+                        endGame = true;
+                        compScore += 1;
+                        return compScore, endGame;
+                    }
+                };
+            };
+
+
             let moveLocation = event.target.getAttribute('space-number');
             console.log(moveLocation);
             if(gameArray[moveLocation] === 'X' || gameArray[moveLocation] === 'O' || moveLocation === null || endGame === true){
@@ -81,7 +119,9 @@ const genGame = (() => {
                 let playerSymbolDisplay = event.target;
                 playerSymbolDisplay.textContent = playerOne;
             };
-            
+
+            winTest();
+
             let randomIndex = Math.floor(Math.random() * 9);
             while(gameArray[randomIndex] === 'X' || gameArray[randomIndex] === 'O'){
                 if(gameArray.includes('')){
@@ -90,42 +130,16 @@ const genGame = (() => {
                     return;
                 }
             };
-            gameArray[randomIndex] = compPlayer;
-            let compSymbolDisplay = document.querySelector(`[space-number="${randomIndex}"]`);
-            compSymbolDisplay.textContent = compPlayer;
-
-            const winScenario1 = [0,1,2].map(x=>gameArray[x]);
-            const winScenario2 = [3,4,5].map(x=>gameArray[x]);
-            const winScenario3 = [6,7,8].map(x=>gameArray[x]);
-            const winScenario4 = [0,3,6].map(x=>gameArray[x]);
-            const winScenario5 = [1,4,7].map(x=>gameArray[x]);
-            const winScenario6 = [2,5,8].map(x=>gameArray[x]);
-            const winScenario7 = [0,4,8].map(x=>gameArray[x]);
-            const winScenario8 = [2,4,6].map(x=>gameArray[x]);
-
-            let winScenarios = [winScenario1, winScenario2, winScenario3, winScenario4, winScenario5, winScenario6, winScenario7, winScenario8];
-
-            function isPlayerPawn (item){
-                return item === playerOne;
+            
+            if(endGame === false){
+                gameArray[randomIndex] = compPlayer;
+                let compSymbolDisplay = document.querySelector(`[space-number="${randomIndex}"]`);
+                compSymbolDisplay.textContent = compPlayer;
+            } else {
+                return;
             }
 
-            function isCompPawn (item){
-                return item === compPlayer;
-            }
-
-            for (let i = 0; i < winScenarios.length; i++){
-                if(winScenarios[i].every(isPlayerPawn)){
-                    alert(`Game Over! ${playerOne} wins!`);
-                    endGame = true;
-                    playerScore += 1;
-                    return playerScore, endGame;
-                } else if(winScenarios[i].every(isCompPawn)){
-                    alert(`Game Over! ${compPlayer} wins!`);
-                    endGame = true;
-                    compScore += 1;
-                    return compScore, endGame;
-                }
-            };
+            winTest();
         })
     })();
 });
@@ -138,17 +152,7 @@ start.addEventListener('click', function(event){
     toggle(resetBtn);
 });
 
-//function used to toggle visibility of game reset button
-// function toggleReset(){
-//     let hiddenReset = resetBtn.getAttribute('hidden');
-
-//     if(hiddenReset){
-//         resetBtn.removeAttribute('hidden');
-//     } else {
-//         resetBtn.setAttribute('hidden', 'hidden');
-//     }
-// }
-
+//function used to toggle visibility of Reset button and Play Again button
 function toggle(element){
     let hidden = element.getAttribute('hidden');
 
@@ -166,6 +170,7 @@ function playAgain (){
         let compSymbolDisplay = document.querySelector(`[space-number="${i}"]`);
         compSymbolDisplay.textContent = '';
         endGame = false;
+        console.log(`Player Score: ${playerScore} - Comp Score: ${compScore}`);
     }
 }
 
@@ -183,6 +188,3 @@ playAgainBtn.addEventListener('click', function(event){
 resetBtn.addEventListener('click', function(event){
     resetGame();
 })
-
-
-console.log(`Player Score: ${playerScore} - Comp Score: ${compScore}`);
