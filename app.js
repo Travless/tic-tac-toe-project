@@ -9,28 +9,18 @@ gameArray.length = 9;
 const pageContainer = document.getElementById('page-container');
 const resetBtn = document.getElementById('reset-btn');
 const playAgainBtn = document.getElementById('play-again-btn');
-const start = document.getElementById('start-btn');
+// const start = document.getElementById('start-btn');
+const choosePawn = document.getElementById('pawn-choice-text');
+const pawnBtnContainer = document.getElementById('pawn-choice-buttons-container');
+const xPawnBtn = document.getElementById('x-pawn-btn');
+const oPawnBtn = document.getElementById('o-pawn-btn');
+const titleText = document.getElementById('title-text');
 
 
 //generates game via a module
 const genGame = (() => {
     const gameBoard = document.getElementById('gameboard-grid-container');
     const pageContainer = document.getElementById('page-container');
-
-    // Generates if player will be X or O for their player pawn (will improve logic)
-    const userPawns = () => {
-        let playerPawn = prompt('X or O?');
-        playerOne = playerPawn.toUpperCase();
-        
-        if (playerOne === 'X') {
-            compPlayer = 'O';
-        } else if (playerOne === 'O') {
-            compPlayer = 'X';
-        }
-        return { playerOne, compPlayer };
-    };
-
-    userPawns();
 
     //generates gameboard at beginning of the game, after the player chooses their pawn
     const genGameboard = (() => {
@@ -117,6 +107,7 @@ const genGame = (() => {
             } else {
                 gameArray[moveLocation] = playerOne;
                 let playerSymbolDisplay = event.target;
+                playerSymbolDisplay.setAttribute('id', 'player-display-symbols');
                 playerSymbolDisplay.textContent = playerOne;
             };
 
@@ -134,6 +125,7 @@ const genGame = (() => {
             if(endGame === false){
                 gameArray[randomIndex] = compPlayer;
                 let compSymbolDisplay = document.querySelector(`[space-number="${randomIndex}"]`);
+                compSymbolDisplay.setAttribute('id', 'comp-display-symbols');
                 compSymbolDisplay.textContent = compPlayer;
             } else {
                 return;
@@ -144,13 +136,35 @@ const genGame = (() => {
     })();
 });
 
-//event listener designated to Start button, which will initial game generation as well as remove the button's DOM element and toggle the Game Reset button's visability
-start.addEventListener('click', function(event){
-    genGame();
-    start.remove();
-    toggle(playAgainBtn);
-    toggle(resetBtn);
-});
+// Generates if player will be X or O for their player pawn (will improve logic)
+const displayController = (() => {
+    xPawnBtn.addEventListener('click', function(event){
+        playerOne = 'X';
+        compPlayer= 'O'
+
+        genGame();
+        choosePawn.remove();
+        xPawnBtn.remove();
+        oPawnBtn.remove();
+        titleText.remove();
+        toggle(playAgainBtn);
+        toggle(resetBtn);
+    });
+
+    oPawnBtn.addEventListener('click', function(event){
+        playerOne = 'O';
+        compPlayer = 'X'
+
+        genGame();
+        choosePawn.remove();
+        xPawnBtn.remove();
+        oPawnBtn.remove();
+        titleText.remove();
+        toggle(playAgainBtn);
+        toggle(resetBtn);
+    });
+    return { playerOne, compPlayer };
+})();
 
 //function used to toggle visibility of Reset button and Play Again button
 function toggle(element){

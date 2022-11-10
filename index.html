@@ -9,11 +9,23 @@
     <script src="app.js" defer></script>
 </head>
 <body>
+    
     <div class="page-container" id="page-container">
+        <div class="container" id="pawn-choice-container">
+            <div class="title-text" id="title-text">Tic-Tac-Toe</div>
+            <br>
+            <div class="choice-text" id="pawn-choice-text">Choose Your Pawn</div>
+            <div class="container" id="pawn-choice-buttons-container">
+                <button class="btn" id="x-pawn-btn">X</button>
+                <button class="btn" id="o-pawn-btn">O</button>
+            </div>
+        </div>
         <div class="grid-container" id="gameboard-grid-container"></div>
-        <button class="btn" id="start-btn">Start</button>
-        <button class="btn" id="play-again-btn" hidden = 'hidden'>Play Again?</button>
-        <button class="btn" id="reset-btn" hidden = 'hidden'>Reset Game</button>
+        <br>
+        <div class="container" id="game-options-btn-container">
+            <button class="btn" id="play-again-btn" hidden = 'hidden'>Play Again?</button>
+            <button class="btn" id="reset-btn" hidden = 'hidden'>Reset Game</button>
+        </div>
     </div>
 </body>
 </html>
