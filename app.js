@@ -146,7 +146,7 @@ const displayController = (() => {
         choosePawn.remove();
         xPawnBtn.remove();
         oPawnBtn.remove();
-        titleText.remove();
+        // titleText.remove();
         toggle(playAgainBtn);
         toggle(resetBtn);
     });
@@ -159,7 +159,7 @@ const displayController = (() => {
         choosePawn.remove();
         xPawnBtn.remove();
         oPawnBtn.remove();
-        titleText.remove();
+        // titleText.remove();
         toggle(playAgainBtn);
         toggle(resetBtn);
     });
