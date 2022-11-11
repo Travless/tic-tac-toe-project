@@ -15,6 +15,8 @@ const pawnBtnContainer = document.getElementById('pawn-choice-buttons-container'
 const xPawnBtn = document.getElementById('x-pawn-btn');
 const oPawnBtn = document.getElementById('o-pawn-btn');
 const titleText = document.getElementById('title-text');
+let score = document.getElementById('score');
+let winner = document.getElementById('winner');
 
 
 //generates game via a module
@@ -86,14 +88,18 @@ const genGame = (() => {
 
                 for (let i = 0; i < winScenarios.length; i++){
                     if(winScenarios[i].every(isPlayerPawn)){
-                        alert(`Game Over! ${playerOne} wins!`);
+                        winner.style.visibility = 'visible';
+                        winner.textContent = `Game Over! ${playerOne} wins!`
                         endGame = true;
                         playerScore += 1;
+                        score.textContent = `Player Score: ${playerScore} - Comp Score: ${compScore}`
                         return playerScore, endGame;
                     } else if(winScenarios[i].every(isCompPawn)){
-                        alert(`Game Over! ${compPlayer} wins!`);
+                        winner.style.visibility = 'visible';
+                        winner.textContent = `Game Over! ${compPlayer} wins!`
                         endGame = true;
                         compScore += 1;
+                        score.textContent = `Player Score: ${playerScore} - Comp Score: ${compScore}`
                         return compScore, endGame;
                     }
                 };
@@ -184,6 +190,7 @@ function playAgain (){
         let compSymbolDisplay = document.querySelector(`[space-number="${i}"]`);
         compSymbolDisplay.textContent = '';
         endGame = false;
+        winner.style.visibility = 'hidden';
         console.log(`Player Score: ${playerScore} - Comp Score: ${compScore}`);
     }
 }
